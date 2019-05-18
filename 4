@@ -1,0 +1,31 @@
+
+#include <iostream>
+using namespace std;
+void check(int mass[][5],const int row,const int col);
+int main(int argc, const char * argv[]) {
+    setlocale(LC_ALL, "rus");
+    // insert code here...
+    int arr[5][5]={
+        {0,1,1,1,1},
+        {1,0,1,1,1},
+        {1,1,0,1,1},
+        {1,1,1,0,1},
+        {1,1,1,1,0},
+    };
+    check(arr,5,5);
+    return 0;
+}
+void check(int mass[][5],const int row,const int col){
+    for(int i=0;i<row;i++){
+        for(int j=0;j<col;j++){
+            if((i!=j)&&(mass[i][j]==0)){
+                cout<<"граф не связный"<<endl;
+                exit(1);
+            }
+            else if((i==j)&&(mass[row][col])==1){
+                cout<<"в графе есть петли"<<endl;
+            }
+        }
+    }
+    cout<<"граф связный"<<endl;
+}
