@@ -1,0 +1,90 @@
+//номер 2 
+#include "pch.h"
+#include <iostream>
+#include <stack>
+using namespace std;
+struct info {
+	int key;
+	bool checked;
+};
+struct Node {
+	info Data;
+	Node *left = nullptr;
+	Node *right = nullptr;
+	Node *parent = nullptr;
+};
+struct tree {
+	Node To_leaf(Node **node)//спускаемся к листу
+	{
+		while (((*node)->right == nullptr) && ((*node)->left == nullptr))
+		{
+			if ((*node)->left == nullptr)
+			{
+				(*node) = (*node)->right;
+			}
+			else if ((*node)->right == nullptr)
+			{
+				(*node) = (*node)->left;
+			}
+			else {
+				(*node) = (*node)->left;
+			}
+		}
+		return **node;
+	}
+	int search_lenght(int h, Node **cur) { //передаем листок
+		int counter = 0;
+		stack<int> Mystack;
+		(*cur)->Data.checked = true;
+		Mystack.push((*cur)->Data.key);
+		(*cur) = (*cur)->parent;
+		while (((*cur)->right == nullptr) && ((*cur)->left == nullptr))
+		{
+			Mystack.push((*cur)->Data.key);
+			(*cur)->Data.checked = true;
+			if (((*cur)->left->Data.checked == true) || ((*cur)->left == nullptr)) {
+				(*cur) = (*cur)->right;
+			}
+			else if (((*cur)->right->Data.checked == true) || ((*cur)->right == nullptr)) {
+				(*cur) = (*cur)->left;
+			}
+			else
+			{
+				(*cur) = (*cur)->left;
+			}
+		}
+		if ((Mystack.size() - 1) == h) {
+			counter++;
+		}
+		while (((*cur)->right->Data.checked != true) && ((*cur)->left->Data.checked != true) )
+		{
+			Mystack.pop();
+			(*cur) = (*cur)->parent;
+			while (( ((*cur)->right == nullptr) && ((*cur)->left == nullptr)) || (((*cur)->right->Data.checked == true) && ((*cur)->left->Data.checked == true)))
+			{
+				Mystack.push((*cur)->Data.key);
+				(*cur)->Data.checked = true;
+				if (((*cur)->left->Data.checked == true) || ((*cur)->left == nullptr)) {
+					(*cur) = (*cur)->right;
+				}
+				else if (((*cur)->right->Data.checked == true) || ((*cur)->right == nullptr)) {
+					(*cur) = (*cur)->left;
+				}
+				else
+				{
+					(*cur) = (*cur)->left;
+				}
+			}
+			if ((Mystack.size() - 1) == h) {
+				counter++;
+			}
+		}
+			return counter;
+	}
+};
+
+
+int main()
+{
+    std::cout << "Hello World!\n"; 
+}
