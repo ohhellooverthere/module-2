@@ -1,0 +1,78 @@
+#include <iostream>
+using namespace std;
+
+struct node{
+  int data;
+  node* left, * right;
+};
+
+/* вывод */
+void printLevelOrder(node* root)
+{
+  int h = height(root);
+  int i;
+  for (i = 1; i <= h; i++)
+    printGivenLevel(root, i);
+}
+
+/* вывод на заданном уровне*/
+void printGivenLevel(node * root, int level)
+{
+  if (root == NULL)
+    return;
+  if (level == 1)
+    cout << root->data << " ";
+  else if (level > 1)
+  {
+    printGivenLevel(root->left, level - 1);
+    printGivenLevel(root->right, level - 1);
+  }
+}
+
+/* считаем высоту*/
+int height(node * node)
+{
+  if (node == NULL)
+    return 0;
+  else
+  {
+    /* высота каждого поддерева*/
+    int lheight = height(node->left);
+    int rheight = height(node->right);
+
+    /* выбирайем побольше */
+    if (lheight > rheight)
+      return(lheight + 1);
+    else return(rheight + 1);
+  }
+}
+struct node* addnode(int x, node* tree) {
+  if (tree == NULL) { // Если дерева нет, то формируем корень
+    tree = new node; // память под узел
+    tree->data = x;   // поле данных
+    tree->left = NULL;
+    tree->right = NULL; // ветви инициализируем пустотой
+  }
+  else  if (x < tree->data)   // условие добавление левого потомка
+    tree->left = addnode(x, tree->left);
+  else    // условие добавление правого потомка
+    tree->right = addnode(x, tree->right);
+  return(tree);
+}
+int height(node* node); void printGivenLevel(node* root, int level); void printLevelOrder(node* root); struct node* addnode(int x, node* tree);
+int main()
+{
+  int i;
+  struct node* root;
+  root = NULL;
+  do {
+    cin >> i;
+    if (i != -1)// закончить
+    {
+      root = addnode(i, root);
+    };
+  } while (i != -1);
+
+  printLevelOrder(root);
+  return 0;
+}
